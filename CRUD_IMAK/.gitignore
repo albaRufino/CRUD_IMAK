@@ -2,6 +2,7 @@
 *.exe
 *.out
 *.app
+main
 
 #ignorando archivos de objetos, bibliotecas y otras basuras
 *.o
