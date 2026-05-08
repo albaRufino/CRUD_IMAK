@@ -1,0 +1,25 @@
+# Ignorando ejecutables y archivos de salida
+*.exe
+*.out
+*.app
+
+#ignorando archivos de objetos, bibliotecas y otras basuras
+*.o
+*.obj
+*.so
+*.a
+*.dll
+
+*.layout
+*.depend
+bin/
+obj/
+
+.vscode/
+
+.DS_Store
+Thumbs.db
+
+*~
+*.swp
+*.tmp
