@@ -15,6 +15,9 @@
 bin/
 obj/
 
+# viendo si es necesario ignorar .cbp o no
+*.cbp
+
 .vscode/
 
 .DS_Store
