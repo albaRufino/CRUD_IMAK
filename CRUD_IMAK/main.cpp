@@ -2,7 +2,7 @@
 
 using namespace std;
 
-struct Alumno{
+struct Estudiante{
     int matricula;
     string nombre;
     int edad;
@@ -11,20 +11,26 @@ struct Alumno{
     string telefono;
 };
 
+struct Nodo{
+    Estudiante datos;
+    Nodo* siguiente;
+};
+
+void dar_de_alta_Estudiante(Nodo*&);
 void menu(int*);
-bool validarMenuPrincipal(int);
+bool validar_menu_principal(int);
+bool validar_matricula(Nodo*, int);
 
 int main()
 {
-    int opcionPrincipal = 0;
+    Nodo* lista_alumnos = NULL;
+    int opcion_principal = 0;
     do{
-    cout << "SISTEMA DE ESTUDIANTES IMAK" << endl;
-    menu(&opcionPrincipal);
+    menu(&opcion_principal);
 
-    switch(opcionPrincipal){
+    switch(opcion_principal){
     case 1:
-    cout<<"ALTA DE ESTUDIANTES"<<endl;
-
+    dar_de_alta_Estudiante(lista_alumnos);
     break;
 
     case 2:
@@ -46,10 +52,21 @@ int main()
     case 6:
     cout<<"Saliendo..."<<endl;
     }
-    }while(opcionPrincipal != 6);
+    }while(opcion_principal != 6);
 }
 
-bool validarMenuPrincipal(int opcion){
+void dar_de_alta_Estudiante(Nodo*& lista){
+    cout<<"ALTA DE ESTUDIANTES"<<endl;
+
+    Estudiante nuevo_Estudiante;
+
+    cout<<"Matricula: ";
+    cin>>nuevo_Estudiante.matricula;
+    cout<<"Nombre: ";
+    system("cls");
+}
+
+bool validar_menu_principal(int opcion){
     bool validacion = true;
     if(opcion >=1 && opcion<= 6)
     validacion = false;
@@ -57,6 +74,7 @@ bool validarMenuPrincipal(int opcion){
 }
 
 void menu(int* opcion){
+    cout << "SISTEMA DE ESTUDIANTES IMAK" << endl;
     cout << "MENU" << endl;
     cout <<"1) Alta de estudiante"<<endl;
     cout <<"2) Baja de estudiante"<<endl;
@@ -68,9 +86,9 @@ void menu(int* opcion){
     cout<<"Ingrese su opcion: ";
     do{
     cin>>*opcion;
-    if(validarMenuPrincipal(*opcion)){
+    if(validar_menu_principal(*opcion)){
     cout<<"Error, ingreso una opcion invalida, pruebe una opcion entre 1-6: ";
     }
-    }while(validarMenuPrincipal(*opcion));
+    }while(validar_menu_principal(*opcion));
     system("cls");
 }
