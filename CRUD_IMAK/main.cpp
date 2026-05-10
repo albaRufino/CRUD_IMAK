@@ -17,9 +17,13 @@ struct Nodo{
 };
 
 void dar_de_alta_Estudiante(Nodo*&);
+void insertar_alumno(Nodo*&, Estudiante);
 void menu(int*);
 bool validar_menu_principal(int);
 bool validar_matricula(Nodo*, int);
+Nodo* mergesort(Nodo*);
+Nodo* merge(Nodo*, Nodo*);
+void dividir_lista(Nodo*, Nodo**, Nodo**);
 
 int main()
 {
@@ -60,10 +64,68 @@ void dar_de_alta_Estudiante(Nodo*& lista){
 
     Estudiante nuevo_Estudiante;
 
-    cout<<"Matricula: ";
-    cin>>nuevo_Estudiante.matricula;
+    do{
+        cout<<"Matricula: ";
+        cin>>nuevo_Estudiante.matricula;
+        if(validar_matricula(lista, nuevo_Estudiante.matricula)){
+            cout<<"Error: La matricula ya existe en el sistema"<<endl;
+        }
+    }while(validar_matricula(lista, nuevo_Estudiante.matricula));
+
+    cin.ignore();
+
     cout<<"Nombre: ";
+    getline(cin, nuevo_Estudiante.nombre);
+    cout<<"Edad: ";
+    cin>>nuevo_Estudiante.edad;
+    cout<<"Promedio: ";
+    cin>>nuevo_Estudiante.promedio;
+    cin.ignore();
+    cout<<"Direccion: ";
+    getline(cin, nuevo_Estudiante.direccion);
+    cout<<"Telefono: ";
+    getline(cin, nuevo_Estudiante.telefono);
+
+    Nodo* nuevo = new Nodo();
+    nuevo->datos = nuevo_Estudiante;
+    nuevo->siguiente = NULL;
+
+    if(lista == NULL){
+        lista = nuevo;
+    } else {
+        Nodo* actual = lista;
+        while(actual->siguiente != NULL){
+            actual = actual->siguiente;
+        }
+        actual->siguiente = nuevo;
+    }
+
+    lista = mergesort(lista);
+
+    cout<<"Alumno dado de alta correctamente"<<endl;
     system("cls");
+}
+
+void insertar_alumno(Nodo*& lista, Estudiante estudiante){
+    Nodo* nuevo = new Nodo();
+
+    nuevo->datos = estudiante;
+    nuevo->siguiente = NULL;
+
+    if(lista == NULL || estudiante.matricula < lista->datos.matricula){
+        nuevo->siguiente = lista;
+        lista = nuevo;
+    }
+    else{
+        Nodo* actual = lista;
+
+        while(actual->siguiente != NULL &&
+              actual->siguiente->datos.matricula < estudiante.matricula){
+            actual = actual->siguiente;
+        }
+        nuevo->siguiente = actual->siguiente;
+        actual->siguiente = nuevo;
+    }
 }
 
 bool validar_menu_principal(int opcion){
@@ -87,8 +149,73 @@ void menu(int* opcion){
     do{
     cin>>*opcion;
     if(validar_menu_principal(*opcion)){
-    cout<<"Error, ingreso una opcion invalida, pruebe una opcion entre 1-6: ";
+    cout<<"Error: opcion invalida, pruebe una opcion entre 1-6: ";
     }
     }while(validar_menu_principal(*opcion));
     system("cls");
+}
+
+bool validar_matricula(Nodo* lista, int matricula){
+    bool validacion = false;
+    Nodo* actual = lista;
+    while(actual != NULL){
+        if(actual->datos.matricula == matricula){
+            validacion = true;
+        }
+        actual = actual->siguiente;
+    }
+    return validacion;
+}
+
+void dividir_lista(Nodo* fuente, Nodo** frente, Nodo** atras){
+    Nodo* rapido;
+    Nodo* lento;
+    lento = fuente;
+    rapido = fuente->siguiente;
+
+    while(rapido != NULL){
+        rapido = rapido->siguiente;
+        if(rapido != NULL){
+            lento = lento->siguiente;
+            rapido = rapido->siguiente;
+        }
+    }
+
+    *frente = fuente;
+    *atras = lento->siguiente;
+    lento->siguiente = NULL;
+}
+
+Nodo* merge(Nodo* a, Nodo* b){
+    Nodo* resultado = NULL;
+
+    if(a == NULL)
+        return b;
+    else if(b == NULL)
+        return a;
+
+    if(a->datos.matricula <= b->datos.matricula){
+        resultado = a;
+        resultado->siguiente = merge(a->siguiente, b);
+    } else {
+        resultado = b;
+        resultado->siguiente = merge(a, b->siguiente);
+    }
+
+    return resultado;
+}
+
+Nodo* mergesort(Nodo* cabeza){
+    if(cabeza == NULL || cabeza->siguiente == NULL)
+        return cabeza;
+
+    Nodo* a;
+    Nodo* b;
+
+    dividir_lista(cabeza, &a, &b);
+
+    a = mergesort(a);
+    b = mergesort(b);
+
+    return merge(a, b);
 }
