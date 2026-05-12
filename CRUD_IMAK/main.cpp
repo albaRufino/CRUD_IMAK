@@ -5,6 +5,14 @@
 #include <cstdlib>
 #include <iomanip>
 
+/*
+Julio Antonio Blanco Rufino 2003632
+Emiliano Espinoza Lujan 2043329
+William Rincon Perez 1823198
+Cesar Aaron Mendoza Benavides 1904833
+*/
+
+}
 using namespace std;
 
 struct Estudiante{
